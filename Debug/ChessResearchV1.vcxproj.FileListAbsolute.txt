@@ -1,0 +1,4 @@
+D:\ChessResearchV1\Debug\ChessResearchV1.exe
+D:\ChessResearchV1\Debug\ChessResearchV1.pdb
+D:\DAE\c++\Games\ChessResearchV1\Debug\ChessResearchV1.exe
+D:\DAE\c++\Games\ChessResearchV1\Debug\ChessResearchV1.pdb
