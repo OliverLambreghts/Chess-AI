@@ -52,67 +52,17 @@ void Game::Update(float elapsedSec)
 		PlayMove(m_SelectedIndex, m_SelectedMove);
 	else
 	{
-		int maxEval{}, minEval{};
-		std::pair<int, int> bestMove{};
-		// Copy all adjusted vars
-		int blackScoreCopy = m_BlackScore;
-		int whiteScoreCopy = m_WhiteScore;
-		bool whiteToPlayCopy = m_WhiteToPlay;
-		int selectedIdxCopy = m_SelectedIndex;
-		int selectedMoveCopy = m_SelectedMove;
-		bool hasWhiteKingMovedCopy = m_HasWhiteKingMoved;
-		bool hasBlackKingMovedCopy = m_HasBlackKingMoved;
-		bool hasWhiteRightRookMoved = m_HasWhiteRightRookMoved;
-		bool hasWhiteLeftRookMoved = m_HasWhiteLeftRookMoved;
-		bool hasBlackRightRookMoved = m_HasBlackRightRookMoved;
-		bool hasBlackLeftRookMoved = m_HasBlackLeftRookMoved;
-		int whiteThreats[8][8]{ 0 };
-		int blackThreats[8][8]{ 0 };
-		bool gameOverCopy = m_GameOver;
-		bool whiteInCheckCopy = m_WhiteInCheck;
-		bool blackInCheckCopy = m_BlackInCheck;
+		int boardCopy[8][8]{ 0 };
 		for (int i{}; i < 8; ++i)
 		{
 			for (int j{}; j < 8; ++j)
 			{
-				whiteThreats[i][j] = m_WhiteThreats[i][j];
-				blackThreats[i][j] = m_BlackThreats[i][j];
+				boardCopy[i][j] = m_Board[i][j];
 			}
 		}
-
-		/*while (m_Board[m_Grid.GetRowFromIdx(bestMove.first)][m_Grid.GetColFromIdx(bestMove.first)] >= 0)
-		{*/
-			int eval = Minimax(m_Board, m_Depth, true, -1, maxEval, minEval, bestMove);
-		//}
-
-		m_BlackScore = blackScoreCopy;
-		m_WhiteScore = whiteScoreCopy;
-		m_WhiteToPlay = whiteToPlayCopy;
-		m_SelectedIndex = selectedIdxCopy;
-		m_SelectedMove = selectedMoveCopy;
-		m_HasWhiteKingMoved = hasWhiteKingMovedCopy;
-		m_HasBlackKingMoved = hasBlackKingMovedCopy;
-		m_HasWhiteRightRookMoved = hasWhiteRightRookMoved;
-		m_HasWhiteLeftRookMoved = hasWhiteLeftRookMoved;
-		m_HasBlackRightRookMoved = hasBlackRightRookMoved;
-		m_HasBlackLeftRookMoved = hasBlackLeftRookMoved;
-		m_GameOver = gameOverCopy;
-		m_WhiteInCheck = whiteInCheckCopy;
-		m_BlackInCheck = blackInCheckCopy;
-		for (int i{}; i < 8; ++i)
-		{
-			for (int j{}; j < 8; ++j)
-			{
-				m_WhiteThreats[i][j] = whiteThreats[i][j];
-				m_BlackThreats[i][j] = blackThreats[i][j];
-			}
-		}
-
-		// Reset all adjusted vars
-
-		m_SelectedIndex = bestMove.first;
-		m_SelectedMove = bestMove.second;
-		PlayMove(m_SelectedIndex, m_SelectedMove);
+		Minimax(boardCopy, m_Depth, false, m_BlackScore, m_WhiteScore, m_WhiteToPlay, m_SelectedIndex, m_SelectedMove, m_HasWhiteKingMoved, m_HasBlackKingMoved,
+			m_HasWhiteRightRookMoved, m_HasWhiteLeftRookMoved, m_HasBlackRightRookMoved, m_HasBlackLeftRookMoved, m_WhiteThreats, m_BlackThreats, m_GameOver, m_WhiteInCheck,
+			m_BlackInCheck);
 	}
 }
 
@@ -206,7 +156,7 @@ void Game::CheckMate(int board[8][8])
 	if (whiteInMate)
 	{
 		m_GameOver = true;
-		std::cout << "White is in checkmate\n";
+		//std::cout << "White is in checkmate\n";
 		return;
 	}
 	// Check if black's in mate
@@ -221,7 +171,7 @@ void Game::CheckMate(int board[8][8])
 	if (blackInMate)
 	{
 		m_GameOver = true;
-		std::cout << "Black is in checkmate\n";
+		//std::cout << "Black is in checkmate\n";
 		return;
 	}
 
@@ -240,7 +190,7 @@ void Game::CheckMate(int board[8][8])
 	if (m_BlackThreats[m_Grid.GetRowFromIdx(whiteKing)][m_Grid.GetColFromIdx(whiteKing)] != 0)
 	{
 		m_WhiteInCheck = true;
-		std::cout << "White's king is in check\n";
+		//std::cout << "White's king is in check\n";
 		return;
 	}
 	m_WhiteInCheck = false;
@@ -258,7 +208,7 @@ void Game::CheckMate(int board[8][8])
 	if (m_WhiteThreats[m_Grid.GetRowFromIdx(blackKing)][m_Grid.GetColFromIdx(blackKing)] != 0)
 	{
 		m_BlackInCheck = true;
-		std::cout << "Black's king is in check\n";
+		//std::cout << "Black's king is in check\n";
 		return;
 	}
 	m_BlackInCheck = false;
@@ -312,18 +262,18 @@ void Game::PlayMove(int startIdx, int destIdx)
 void Game::PlayMove(int startIdx, int destIdx, int board[8][8])
 {
 	if (m_SelectedIndex == -1) return;
-	if (m_WhiteToPlay && board[m_Grid.GetRowFromIdx(startIdx)][m_Grid.GetColFromIdx(startIdx)] < 0)
+	/*if (m_WhiteToPlay && board[m_Grid.GetRowFromIdx(startIdx)][m_Grid.GetColFromIdx(startIdx)] < 0)
 	{
 		m_SelectedIndex = -1;
 		m_SelectedMove = -1;
 		return;
-	}
-	if (!m_WhiteToPlay && board[m_Grid.GetRowFromIdx(startIdx)][m_Grid.GetColFromIdx(startIdx)] > 0)
+	}*/
+	/*if (!m_WhiteToPlay && board[m_Grid.GetRowFromIdx(startIdx)][m_Grid.GetColFromIdx(startIdx)] > 0)
 	{
 		m_SelectedIndex = -1;
 		m_SelectedMove = -1;
 		return;
-	}
+	}*/
 	auto legalMoves = GetAllLegalMoves(m_SelectedIndex, board, m_Depth);
 	if (legalMoves.empty())
 	{
@@ -1553,102 +1503,272 @@ int Game::Evaluate(int board[8][8], int maximizingColor)
 	return m_BlackScore - m_WhiteScore;
 }
 
+int Game::NewEvaluate(int blackScore, int whiteScore)
+{
+	return whiteScore - blackScore;
+}
+
 // -------------------- MINIMAX ALGORITHM --------------------
 
-int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int maximizingColor, int& maxEval, int& minEval, std::pair<int, int>& bestMove) noexcept
+int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackScore, int whiteScore, bool whiteToPlay, int selectedIdx, int selectedMove, bool hasWhiteKingMoved,
+	bool hasBlackKingMoved,
+	bool hasWhiteRightRookMoved,
+	bool hasWhiteLeftRookMoved,
+	bool hasBlackRightRookMoved,
+	bool hasBlackLeftRookMoved,
+	int whiteThreats[8][8],
+	int blackThreats[8][8],
+	bool gameOver,
+	bool whiteInCheck,
+	bool blackInCheck)
 {
-	if (depth == 0 /*Of is het spel gedaan?*/)
-	{
-		return Evaluate(board, maximizingColor);
-	}
-	// 1. Eerst alle moves in een move vector steken
-	std::vector<std::pair<int, std::vector<int>>> moves;
-	// If maximizing player is black
-	if (maximizingPlayer)
-	{
-		for (int i{}; i < 63; ++i)
-		{
-			if (board[m_Grid.GetRowFromIdx(i)][m_Grid.GetColFromIdx(i)] < 0)
-			{
-				if(!GetAllLegalMoves(i, board, depth).empty())
-					moves.push_back(std::make_pair(i, GetAllLegalMoves(i, board, depth)));
-			}
-		}
-	}
-	// If maximizing player is white
-	else if(!maximizingPlayer)
-	{
-		for (int i{}; i < 63; ++i)
-		{
-			if (board[m_Grid.GetRowFromIdx(i)][m_Grid.GetColFromIdx(i)] > 0)
-			{
-				if (!GetAllLegalMoves(i, board, depth).empty())
-					moves.push_back(std::make_pair(i, GetAllLegalMoves(i, board, depth)));
-			}
-		}
-	}
-	// 2. Dan een bestMove var maken en die initten op een random move vanuit
-	// de move vector
-	std::random_shuffle(moves.begin(), moves.end());
-	std::pair<int, std::vector<int>> randChoice = moves[0];
-	std::random_shuffle(randChoice.second.begin(), randChoice.second.end());
-	std::pair<int, int> localBestMove = std::make_pair(randChoice.first, randChoice.second[0]);
-	// 3. Als we de maximizing player zijn moeten we over alle moves loopen
-	// , checken wat de game state is nadat elke move gezet is en dan checken
-	// of de waarde van de resulterende game state hoger is dan degenen die
-	// we ervoor gezien hebben
-	int localMaxEval{ -9999 }, localMinEval{ 9999 }, currentEval{};
-	int localBoard[8][8]{ 0 };
-	for (int i{}; i < 8; ++i)
-	{
-		for (int j{}; j < 8; ++j)
-		{
-			localBoard[i][j] = board[i][j];
-		}
-	}
-	if (maximizingPlayer)
-	{
-		// In de MovePiece method gaan wel een aantal member vars aangepast worden
-		// dus na deze functie gecalled te hebben ga je die wel op hun originele
-		// waardes moeten zetten dus maak hier een kopie en zet die na het callen
-		// terug op hun kopie.
-		for (auto piece : moves)
-		{
-			for (auto move : piece.second)
-			{
+	//int blackScoreCopy{};
+	//int whiteScoreCopy{};
+	//bool whiteToPlayCopy{};
+	//int selectedIdxCopy{};
+	//int selectedMoveCopy{};
+	//bool hasWhiteKingMovedCopy{};
+	//bool hasBlackKingMovedCopy{};
+	//bool hasWhiteRightRookMovedCopy{};
+	//bool hasWhiteLeftRookMovedCopy{};
+	//bool hasBlackRightRookMovedCopy{};
+	//bool hasBlackLeftRookMovedCopy{};
+	//int whiteThreatsCopy[8][8]{ 0 };
+	//int blackThreatsCopy[8][8]{ 0 };
+	//bool gameOverCopy{};
+	//bool whiteInCheckCopy{};
+	//bool blackInCheckCopy{};
+	//// Als we in de eerste minimax zitten een kopie maken van alle variabelen
+	//if (depth == m_Depth)
+	//{
+	//	blackScoreCopy = m_BlackScore;
+	//	whiteScoreCopy = m_WhiteScore;
+	//	whiteToPlayCopy = m_WhiteToPlay;
+	//	selectedIdxCopy = m_SelectedIndex;
+	//	selectedMoveCopy = m_SelectedMove;
+	//	hasWhiteKingMovedCopy = m_HasWhiteKingMoved;
+	//	hasBlackKingMovedCopy = m_HasBlackKingMoved;
+	//	hasWhiteRightRookMovedCopy = m_HasWhiteRightRookMoved;
+	//	hasWhiteLeftRookMovedCopy = m_HasWhiteLeftRookMoved;
+	//	hasBlackRightRookMovedCopy = m_HasBlackRightRookMoved;
+	//	hasBlackLeftRookMovedCopy = m_HasBlackLeftRookMoved;
+	//	for (int i{}; i < 8; ++i)
+	//	{
+	//		for (int j{}; j < 8; ++j)
+	//		{
+	//			whiteThreats[i][j] = m_WhiteThreats[i][j];
+	//			blackThreats[i][j] = m_BlackThreats[i][j];
+	//		}
+	//	}
+	//	gameOverCopy = m_GameOver;
+	//	whiteInCheckCopy = m_WhiteInCheck;
+	//	blackInCheckCopy = m_BlackInCheck;
+	//}
 
-				PlayMove(piece.first, move, localBoard);
-				currentEval = Minimax(localBoard, depth - 1, false, maximizingColor, localMaxEval, localMinEval, localBestMove);
-				if (currentEval > localMaxEval)
+	if (depth == 0 || m_GameOver)
+	{
+		return NewEvaluate(m_BlackScore, m_WhiteScore);
+	}
+
+	std::pair<int, int> bestMove{};
+	// Zwart is de minimizingPlayer: zoekt naar de laagste evaluatie dus we gaan eerst checken voor zwart
+	if (!maximizingPlayer)
+	{
+		std::vector<std::pair<int, int>> moves;
+		std::vector<int> currentPieceMoves;
+		int minEval = 99999;
+		int currentEval{};
+		// Eerst alle mogelijke moves voor zwarte verzamelen
+		for (int i{}; i < 63; ++i)
+		{
+			// Als de piece op tile met idx i negatief is (en dus zwart is)
+			if (m_Board[m_Grid.GetRowFromIdx(i)][m_Grid.GetColFromIdx(i)] < 0)
+			{
+				currentPieceMoves = GetAllLegalMoves(i, board, depth);
+				// Als die piece geen legal moves heeft naar de volgende piece gaan
+				if (currentPieceMoves.empty()) continue;
+				for (int move : currentPieceMoves)
 				{
-					localMaxEval = currentEval;
-					localBestMove = std::make_pair(piece.first, move);
+					moves.push_back(std::make_pair(i, move));
+				}
+				
+			}
+		}
+		// Hier moeten we over alle mogelijke moves voor zwart loopen en de minimax voor elke move oproepen
+		for (auto move : moves)
+		{
+			// Voor elke move een kopie maken van het bord en alle variabelen
+			int blackScoreCopy{blackScore};
+			int whiteScoreCopy{whiteScore};
+			bool whiteToPlayCopy{whiteToPlay};
+			int selectedIdxCopy{selectedIdx};
+			int selectedMoveCopy{selectedMove};
+			bool hasWhiteKingMovedCopy{hasWhiteKingMoved};
+			bool hasBlackKingMovedCopy{hasBlackKingMoved};
+			bool hasWhiteRightRookMovedCopy{hasWhiteRightRookMoved};
+			bool hasWhiteLeftRookMovedCopy{hasWhiteLeftRookMoved};
+			bool hasBlackRightRookMovedCopy{hasBlackRightRookMoved};
+			bool hasBlackLeftRookMovedCopy{hasBlackLeftRookMoved};
+			int whiteThreatsCopy[8][8]{ 0 };
+			int blackThreatsCopy[8][8]{ 0 };
+			for (int i{}; i < 8; ++i)
+			{
+				for (int j{}; j < 8; ++j)
+				{
+					whiteThreats[i][j] = whiteThreats[i][j];
+					blackThreats[i][j] = blackThreats[i][j];
 				}
 			}
+			bool gameOverCopy{gameOver};
+			bool whiteInCheckCopy{whiteInCheck};
+			bool blackInCheckCopy{blackInCheck};
+
+			int boardCopy[8][8]{ 0 };
+			for (int i{}; i < 8; ++i)
+			{
+				for (int j{}; j < 8; ++j)
+				{
+					boardCopy[i][j] = board[i][j];
+				}
+			}
+			m_SelectedIndex = move.first;
+			m_SelectedMove = move.second;
+			PlayMove(m_SelectedIndex, m_SelectedMove, boardCopy);
+			// De eerstvolgende mogelijke move recursief door de minimax laten gaan
+			currentEval = Minimax(boardCopy, depth - 1, true, blackScore, whiteScore, whiteToPlay, selectedIdx, selectedMove, hasWhiteKingMoved, hasBlackKingMoved, hasWhiteRightRookMoved,
+				hasWhiteLeftRookMoved, hasBlackRightRookMoved, hasBlackLeftRookMoved, whiteThreats, blackThreats, gameOver, whiteInCheck, blackInCheck);
+			// De meest negatieve evaluatie verkiezen
+			minEval = std::min(currentEval, minEval);
+			// Als een nieuwe minEval gekozen wordt, wordt ook een nieuwe bestMove geupdate
+			if (minEval == currentEval) bestMove = move;
+
+			// Originelen terugzetten, move dus undo'en eigenlijk
+			m_BlackScore = blackScoreCopy;
+			m_WhiteScore = whiteScoreCopy;
+			m_WhiteToPlay = whiteToPlayCopy;
+			m_SelectedIndex = selectedIdxCopy;
+			m_SelectedMove = selectedMoveCopy;
+			m_HasWhiteKingMoved = hasWhiteKingMovedCopy;
+			m_HasBlackKingMoved = hasBlackKingMovedCopy;
+			m_HasWhiteRightRookMoved = hasWhiteRightRookMovedCopy;
+			m_HasWhiteLeftRookMoved = hasWhiteLeftRookMovedCopy;
+			m_HasBlackRightRookMoved = hasBlackRightRookMovedCopy;
+			m_HasBlackLeftRookMoved = hasBlackLeftRookMovedCopy;
+			for (int i{}; i < 8; ++i)
+			{
+				for (int j{}; j < 8; ++j)
+				{
+					m_WhiteThreats[i][j] = whiteThreatsCopy[i][j];
+					m_BlackThreats[i][j] = blackThreatsCopy[i][j];
+				}
+			}
+			m_GameOver = gameOverCopy;
+			m_WhiteInCheck = whiteInCheckCopy;
+			m_BlackInCheck = blackInCheckCopy;
 		}
-		maxEval = localMaxEval;
-		bestMove = localBestMove;
-		//return Evaluate(localBoard, maximizingColor);
+		// Als er terug naar de update gereturned gaat worden, kunnen de de move zetten 
+		if (depth == m_Depth)
+		{
+			m_SelectedIndex = bestMove.first;
+			m_SelectedMove = bestMove.second;
+			PlayMove(bestMove.first, bestMove.second);
+		}
+		return minEval;
 	}
+	// Als het aan wit is (maximizing player)
 	else
 	{
-		for (auto piece : moves)
+		std::vector<std::pair<int, int>> moves;
+		std::vector<int> currentPieceMoves;
+		int maxEval = -99999;
+		int currentEval{};
+		// Eerst alle mogelijke moves voor wit verzamelen
+		for (int i{}; i < 63; ++i)
 		{
-			for (auto move : piece.second)
+			// Als de piece op tile met idx i positief is (en dus wit is)
+			if (m_Board[m_Grid.GetRowFromIdx(i)][m_Grid.GetColFromIdx(i)] > 0)
 			{
-				PlayMove(piece.first, move, localBoard);
-				currentEval = Minimax(localBoard, depth - 1, true, maximizingColor, localMaxEval, localMinEval, localBestMove);
-				if (currentEval < localMinEval)
+				currentPieceMoves = GetAllLegalMoves(i, board, depth);
+				// Als die piece geen legal moves heeft naar de volgende piece gaan
+				if (currentPieceMoves.empty()) continue;
+				for (int move : currentPieceMoves)
 				{
-					localMinEval = currentEval;
-					localBestMove = std::make_pair(piece.first, move);
+					moves.push_back(std::make_pair(i, move));
 				}
+
 			}
 		}
-		minEval = localMinEval;
-		bestMove = localBestMove;
+		// Hier moeten we over alle mogelijke moves voor wit loopen en de minimax voor elke move oproepen
+		for (auto move : moves)
+		{
+			int blackScoreCopy{ blackScore };
+			int whiteScoreCopy{ whiteScore };
+			bool whiteToPlayCopy{ whiteToPlay };
+			int selectedIdxCopy{ selectedIdx };
+			int selectedMoveCopy{ selectedMove };
+			bool hasWhiteKingMovedCopy{ hasWhiteKingMoved };
+			bool hasBlackKingMovedCopy{ hasBlackKingMoved };
+			bool hasWhiteRightRookMovedCopy{ hasWhiteRightRookMoved };
+			bool hasWhiteLeftRookMovedCopy{ hasWhiteLeftRookMoved };
+			bool hasBlackRightRookMovedCopy{ hasBlackRightRookMoved };
+			bool hasBlackLeftRookMovedCopy{ hasBlackLeftRookMoved };
+			int whiteThreatsCopy[8][8]{ 0 };
+			int blackThreatsCopy[8][8]{ 0 };
+			for (int i{}; i < 8; ++i)
+			{
+				for (int j{}; j < 8; ++j)
+				{
+					whiteThreats[i][j] = whiteThreats[i][j];
+					blackThreats[i][j] = blackThreats[i][j];
+				}
+			}
+			bool gameOverCopy{ gameOver };
+			bool whiteInCheckCopy{ whiteInCheck };
+			bool blackInCheckCopy{ blackInCheck };
+
+			// Voor elke move een kopie maken van het bord
+			int boardCopy[8][8]{ 0 };
+			for (int i{}; i < 8; ++i)
+			{
+				for (int j{}; j < 8; ++j)
+				{
+					boardCopy[i][j] = board[i][j];
+				}
+			}
+			m_SelectedIndex = move.first;
+			m_SelectedMove = move.second;
+			PlayMove(m_SelectedIndex, m_SelectedMove, boardCopy);
+			// De eerstvolgende mogelijke move recursief door de minimax laten gaan
+			currentEval = Minimax(boardCopy, depth - 1, false, blackScore, whiteScore, whiteToPlay, selectedIdx, selectedMove, hasWhiteKingMoved, hasBlackKingMoved, hasWhiteRightRookMoved,
+				hasWhiteLeftRookMoved, hasBlackRightRookMoved, hasBlackLeftRookMoved, whiteThreats, blackThreats, gameOver, whiteInCheck, blackInCheck);
+			// De meest positieve evaluatie verkiezen
+			maxEval = std::max(currentEval, maxEval);
+			// Hier nog de move undo'en op het bord
+			m_BlackScore = blackScoreCopy;
+			m_WhiteScore = whiteScoreCopy;
+			m_WhiteToPlay = whiteToPlayCopy;
+			m_SelectedIndex = selectedIdxCopy;
+			m_SelectedMove = selectedMoveCopy;
+			m_HasWhiteKingMoved = hasWhiteKingMovedCopy;
+			m_HasBlackKingMoved = hasBlackKingMovedCopy;
+			m_HasWhiteRightRookMoved = hasWhiteRightRookMovedCopy;
+			m_HasWhiteLeftRookMoved = hasWhiteLeftRookMovedCopy;
+			m_HasBlackRightRookMoved = hasBlackRightRookMovedCopy;
+			m_HasBlackLeftRookMoved = hasBlackLeftRookMovedCopy;
+			for (int i{}; i < 8; ++i)
+			{
+				for (int j{}; j < 8; ++j)
+				{
+					m_WhiteThreats[i][j] = whiteThreatsCopy[i][j];
+					m_BlackThreats[i][j] = blackThreatsCopy[i][j];
+				}
+			}
+			m_GameOver = gameOverCopy;
+			m_WhiteInCheck = whiteInCheckCopy;
+			m_BlackInCheck = blackInCheckCopy;
+		}
+		return maxEval;
 	}
-	//return Evaluate(localBoard, maximizingColor);
 }
 
 // -------------------------------------------------------
@@ -1730,7 +1850,7 @@ std::vector<int> Game::GetAllLegalMoves(int index, int board[8][8], int depth) c
 	{
 		// White Pawn
 	case 6:
-		moves = GetWhitePawnMoves(index, board);
+		moves = GetWhitePawnMoves(index, board, depth);
 		break;
 		// Black Pawn
 	case -6:
@@ -1738,7 +1858,7 @@ std::vector<int> Game::GetAllLegalMoves(int index, int board[8][8], int depth) c
 		break;
 		// White Rook
 	case 1:
-		moves = GetWhiteRookMoves(index, board);
+		moves = GetWhiteRookMoves(index, board, depth);
 		break;
 		// Black Rook
 	case -1:
@@ -1746,7 +1866,7 @@ std::vector<int> Game::GetAllLegalMoves(int index, int board[8][8], int depth) c
 		break;
 		// White Knight
 	case 2:
-		moves = GetWhiteKnightMoves(index, board);
+		moves = GetWhiteKnightMoves(index, board, depth);
 		break;
 		// Black Knight
 	case -2:
@@ -1754,7 +1874,7 @@ std::vector<int> Game::GetAllLegalMoves(int index, int board[8][8], int depth) c
 		break;
 		// White Bishop
 	case 3:
-		moves = GetWhiteBishopMoves(index, board);
+		moves = GetWhiteBishopMoves(index, board, depth);
 		break;
 		// Black Bishop
 	case -3:
@@ -1762,7 +1882,7 @@ std::vector<int> Game::GetAllLegalMoves(int index, int board[8][8], int depth) c
 		break;
 		// White Queen
 	case 4:
-		moves = GetWhiteQueenMoves(index, board);
+		moves = GetWhiteQueenMoves(index, board, depth);
 		break;
 		// Black Queen
 	case -4:
@@ -1770,7 +1890,7 @@ std::vector<int> Game::GetAllLegalMoves(int index, int board[8][8], int depth) c
 		break;
 		// White King
 	case 5:
-		moves = GetWhiteKingMoves(index, board);
+		moves = GetWhiteKingMoves(index, board, depth);
 		break;
 		// Black King
 	case -5:
@@ -1883,7 +2003,7 @@ std::vector<int> Game::GetBlackPawnMoves(int index) const
 	return moves;
 }
 
-std::vector<int> Game::GetWhitePawnMoves(int index, int board[8][8]) const
+std::vector<int> Game::GetWhitePawnMoves(int index, int board[8][8], int depth) const
 {
 	std::vector<int> moves;
 	// Als de pawn op een rij staat boven de 2de rij (hier 1 want rijen beginnen op rij 0) betekent dat dat die pawn al heeft bewogen
@@ -1917,7 +2037,15 @@ std::vector<int> Game::GetWhitePawnMoves(int index, int board[8][8]) const
 				moves.push_back(index + 9);
 	}
 
-	//CheckCheck(index, 5, moves);
+	if (m_EnPassant)
+	{
+		if (m_EnPassantIdx == index + 1)
+			moves.push_back(index + 9);
+		if (m_EnPassantIdx == index - 1)
+			moves.push_back(index + 7);
+	}
+
+	//CheckCheck(index, 5, moves, board, depth);
 
 	return moves;
 }
@@ -1950,6 +2078,14 @@ std::vector<int> Game::GetBlackPawnMoves(int index, int board[8][8], int depth) 
 		if (m_Grid.GetColFromIdx(index - 9) < m_Grid.GetColFromIdx(index))
 			if (board[m_Grid.GetRowFromIdx(index - 9)][m_Grid.GetColFromIdx(index - 9)] > 0)
 				moves.push_back(index - 9);
+	}
+
+	if (m_EnPassant)
+	{
+		if (m_EnPassantIdx == index + 1)
+			moves.push_back(index - 7);
+		if (m_EnPassantIdx == index - 1)
+			moves.push_back(index - 9);
 	}
 
 	CheckCheck(index, -5, moves, board, depth);
@@ -2095,7 +2231,7 @@ std::vector<int> Game::GetBlackRookMoves(int index) const
 	return moves;
 }
 
-std::vector<int> Game::GetWhiteRookMoves(int index, int board[8][8]) const
+std::vector<int> Game::GetWhiteRookMoves(int index, int board[8][8], int depth) const
 {
 	std::vector<int> moves;
 
@@ -2158,7 +2294,7 @@ std::vector<int> Game::GetWhiteRookMoves(int index, int board[8][8]) const
 			break;
 	}
 
-	//CheckCheck(index, 5, moves);
+	//CheckCheck(index, 5, moves, board, depth);
 
 	return moves;
 }
@@ -2281,7 +2417,7 @@ std::vector<int> Game::GetBlackKnightMoves(int index) const
 	return moves;
 }
 
-std::vector<int> Game::GetWhiteKnightMoves(int index, int board[8][8]) const
+std::vector<int> Game::GetWhiteKnightMoves(int index, int board[8][8], int depth) const
 {
 	std::vector<int> moves;
 
@@ -2300,7 +2436,7 @@ std::vector<int> Game::GetWhiteKnightMoves(int index, int board[8][8]) const
 		}
 	}
 
-	//CheckCheck(index, 5, moves);
+	//CheckCheck(index, 5, moves, board, depth);
 
 	return moves;
 }
@@ -2471,7 +2607,7 @@ std::vector<int> Game::GetBlackBishopMoves(int index) const
 	return moves;
 }
 
-std::vector<int> Game::GetWhiteBishopMoves(int index, int board[8][8]) const
+std::vector<int> Game::GetWhiteBishopMoves(int index, int board[8][8], int depth) const
 {
 	std::vector<int> moves;
 
@@ -2536,7 +2672,7 @@ std::vector<int> Game::GetWhiteBishopMoves(int index, int board[8][8]) const
 			break;
 	}
 
-	//CheckCheck(index, 5, moves);
+//	CheckCheck(index, 5, moves, board, depth);
 
 	return moves;
 }
@@ -2868,7 +3004,7 @@ std::vector<int> Game::GetBlackQueenMoves(int index) const
 	return moves;
 }
 
-std::vector<int> Game::GetWhiteQueenMoves(int index, int board[8][8]) const
+std::vector<int> Game::GetWhiteQueenMoves(int index, int board[8][8], int depth) const
 {
 	std::vector<int> moves;
 
@@ -2991,7 +3127,7 @@ std::vector<int> Game::GetWhiteQueenMoves(int index, int board[8][8]) const
 			break;
 	}
 
-	//CheckCheck(index, 5, moves);
+	//CheckCheck(index, 5, moves, board, depth);
 
 	return moves;
 }
@@ -3229,7 +3365,7 @@ std::vector<int> Game::GetBlackKingMoves(int index) const
 	return moves;
 }
 
-std::vector<int> Game::GetWhiteKingMoves(int index, int board[8][8]) const
+std::vector<int> Game::GetWhiteKingMoves(int index, int board[8][8], int depth) const
 {
 	std::vector<int> moves;
 
@@ -3248,7 +3384,34 @@ std::vector<int> Game::GetWhiteKingMoves(int index, int board[8][8]) const
 		}
 	}
 
-	//CheckCheck(index, 5, moves);
+	if (!m_HasWhiteKingMoved)
+	{
+		if (m_BlackThreats[m_Grid.GetRowFromIdx(index)][m_Grid.GetColFromIdx(index)] == 0)
+		{
+			if (!m_HasWhiteRightRookMoved)
+			{
+				if (board[m_Grid.GetRowFromIdx(index + 1)][m_Grid.GetColFromIdx(index + 1)] == 0 &&
+					board[m_Grid.GetRowFromIdx(index + 2)][m_Grid.GetColFromIdx(index + 2)] == 0 &&
+					m_BlackThreats[m_Grid.GetRowFromIdx(index + 1)][m_Grid.GetColFromIdx(index + 1)] == 0 &&
+					m_BlackThreats[m_Grid.GetRowFromIdx(index + 2)][m_Grid.GetColFromIdx(index + 2)] == 0)
+				{
+					moves.push_back(index + 2);
+				}
+			}
+			if (!m_HasWhiteLeftRookMoved)
+			{
+				if (board[m_Grid.GetRowFromIdx(index - 1)][m_Grid.GetColFromIdx(index - 1)] == 0 &&
+					board[m_Grid.GetRowFromIdx(index - 2)][m_Grid.GetColFromIdx(index - 2)] == 0 &&
+					m_BlackThreats[m_Grid.GetRowFromIdx(index - 1)][m_Grid.GetColFromIdx(index - 1)] == 0 &&
+					m_BlackThreats[m_Grid.GetRowFromIdx(index - 2)][m_Grid.GetColFromIdx(index - 2)] == 0)
+				{
+					moves.push_back(index - 2);
+				}
+			}
+		}
+	}
+
+	//CheckCheck(index, 5, moves, board, depth);
 
 	return moves;
 }
@@ -3269,6 +3432,33 @@ std::vector<int> Game::GetBlackKingMoves(int index, int board[8][8], int depth) 
 		{
 			if (board[m_Grid.GetRowFromIdx(index - offset)][m_Grid.GetColFromIdx(index - offset)] >= 0)
 				moves.push_back(index - offset);
+		}
+	}
+
+	if (!m_HasBlackKingMoved)
+	{
+		if (m_WhiteThreats[m_Grid.GetRowFromIdx(index)][m_Grid.GetColFromIdx(index)] == 0)
+		{
+			if (!m_HasBlackRightRookMoved)
+			{
+				if (board[m_Grid.GetRowFromIdx(index + 1)][m_Grid.GetColFromIdx(index + 1)] == 0 &&
+					board[m_Grid.GetRowFromIdx(index + 2)][m_Grid.GetColFromIdx(index + 2)] == 0 &&
+					m_WhiteThreats[m_Grid.GetRowFromIdx(index + 1)][m_Grid.GetColFromIdx(index + 1)] == 0 &&
+					m_WhiteThreats[m_Grid.GetRowFromIdx(index + 2)][m_Grid.GetColFromIdx(index + 2)] == 0)
+				{
+					moves.push_back(index + 2);
+				}
+			}
+			if (!m_HasBlackLeftRookMoved)
+			{
+				if (board[m_Grid.GetRowFromIdx(index - 1)][m_Grid.GetColFromIdx(index - 1)] == 0 &&
+					board[m_Grid.GetRowFromIdx(index - 2)][m_Grid.GetColFromIdx(index - 2)] == 0 &&
+					m_WhiteThreats[m_Grid.GetRowFromIdx(index - 1)][m_Grid.GetColFromIdx(index - 1)] == 0 &&
+					m_WhiteThreats[m_Grid.GetRowFromIdx(index - 2)][m_Grid.GetColFromIdx(index - 2)] == 0)
+				{
+					moves.push_back(index - 2);
+				}
+			}
 		}
 	}
 

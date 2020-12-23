@@ -1,41 +1,7 @@
-﻿  pch.cpp
-  Core.cpp
-  Game.cpp
-  Grid.cpp
-  main.cpp
-  Matrix2x3.cpp
-  SoundEffect.cpp
-  SoundStream.cpp
-  Sprite.cpp
-  structs.cpp
-  SVGParser.cpp
-  Texture.cpp
-  utils.cpp
-  Vector2f.cpp
-  Generating Code...
-D:\DAE\c++\Games\ChessResearchV1\Game.cpp(1652): warning C4715: 'Game::Minimax': not all control paths return a value
+﻿  Game.cpp
   ChessResearchV1.vcxproj -> D:\DAE\c++\Games\ChessResearchV1\Debug\ChessResearchV1.exe
   COPY THE DLL FILES
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2-2.0.10\lib\x86\SDL2.dll
-  1 File(s) copied
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_image-2.0.5\lib\x86\libjpeg-9.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_image-2.0.5\lib\x86\libpng16-16.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_image-2.0.5\lib\x86\libtiff-5.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_image-2.0.5\lib\x86\libwebp-7.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_image-2.0.5\lib\x86\SDL2_image.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_image-2.0.5\lib\x86\zlib1.dll
-  6 File(s) copied
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libFLAC-8.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libmodplug-1.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libmpg123-0.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libogg-0.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libopus-0.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libopusfile-0.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libvorbis-0.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\libvorbisfile-3.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_mixer-2.0.4\lib\x86\SDL2_mixer.dll
-  9 File(s) copied
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_ttf-2.0.15\lib\x86\libfreetype-6.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_ttf-2.0.15\lib\x86\SDL2_ttf.dll
-  D:\DAE\c++\Games\ChessResearchV1\Libraries\SDL2_ttf-2.0.15\lib\x86\zlib1.dll
-  3 File(s) copied
+  0 File(s) copied
+  0 File(s) copied
+  0 File(s) copied
+  0 File(s) copied

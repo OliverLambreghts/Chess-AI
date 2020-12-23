@@ -91,7 +91,7 @@ private:
 	// -----
 	// AI
 	// -----
-	int m_WhiteScore, m_BlackScore, m_Depth{2};
+	int m_WhiteScore, m_BlackScore, m_Depth{3};
 	// ------------------------ WEIGHTS -------------------------
 	enum class Weights
 	{
@@ -107,8 +107,19 @@ private:
 	void AdjustScores(int destIdx, int board[8][8]);
 	// -------------- HEURISTIC EVALUATION FUNCTION --------------
 	int Evaluate(int board[8][8], int maximizingColor);
+	int NewEvaluate(int blackScore, int whiteScore);
 	// -------------------- MINIMAX ALGORITHM --------------------
-	int Minimax(int board[8][8], int depth, bool maximizingPlayer, int maximizingColor, int& maxEval, int& minEval, std::pair<int, int>& bestMove) noexcept;
+	int Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackScore, int whiteScore, bool whiteToPlay, int selectedIdx, int selectedMove, bool hasWhiteKingMoved,
+		bool hasBlackKingMoved,
+	bool hasWhiteRightRookMoved,
+	bool hasWhiteLeftRookMoved,
+	bool hasBlackRightRookMoved,
+	bool hasBlackLeftRookMoved,
+	int whiteThreats[8][8],
+	int blackThreats[8][8],
+	bool gameOver,
+	bool whiteInCheck,
+	bool blackInCheck);
 
 	// --------
 	// PLAYING
@@ -134,31 +145,31 @@ private:
 	// ------------------- PAWNS -------------------------
 	std::vector<int> GetWhitePawnMoves(int index) const;
 	std::vector<int> GetBlackPawnMoves(int index) const;
-	std::vector<int> GetWhitePawnMoves(int index, int board[8][8]) const;
+	std::vector<int> GetWhitePawnMoves(int index, int board[8][8], int depth) const;
 	std::vector<int> GetBlackPawnMoves(int index, int board[8][8], int depth) const;
 	// ------------------- ROOKS -------------------------
 	std::vector<int> GetWhiteRookMoves(int index) const;
 	std::vector<int> GetBlackRookMoves(int index) const;
-	std::vector<int> GetWhiteRookMoves(int index, int board[8][8]) const;
+	std::vector<int> GetWhiteRookMoves(int index, int board[8][8], int depth) const;
 	std::vector<int> GetBlackRookMoves(int index, int board[8][8], int depth) const;
 	// ------------------ KNIGHTS ------------------------
 	std::vector<int> GetWhiteKnightMoves(int index) const;
 	std::vector<int> GetBlackKnightMoves(int index) const;
-	std::vector<int> GetWhiteKnightMoves(int index, int board[8][8]) const;
+	std::vector<int> GetWhiteKnightMoves(int index, int board[8][8], int depth) const;
 	std::vector<int> GetBlackKnightMoves(int index, int board[8][8], int depth) const;
 	// ------------------ BISHOPS ------------------------
 	std::vector<int> GetWhiteBishopMoves(int index) const;
 	std::vector<int> GetBlackBishopMoves(int index) const;
-	std::vector<int> GetWhiteBishopMoves(int index, int board[8][8]) const;
+	std::vector<int> GetWhiteBishopMoves(int index, int board[8][8], int depth) const;
 	std::vector<int> GetBlackBishopMoves(int index, int board[8][8], int depth) const;
 	// ------------------ QUEENS -------------------------
 	std::vector<int> GetWhiteQueenMoves(int index) const;
 	std::vector<int> GetBlackQueenMoves(int index) const;
-	std::vector<int> GetWhiteQueenMoves(int index, int board[8][8]) const;
+	std::vector<int> GetWhiteQueenMoves(int index, int board[8][8], int depth) const;
 	std::vector<int> GetBlackQueenMoves(int index, int board[8][8], int depth) const;
 	// ------------------ KINGS --------------------------
 	std::vector<int> GetWhiteKingMoves(int index) const;
 	std::vector<int> GetBlackKingMoves(int index) const;
-	std::vector<int> GetWhiteKingMoves(int index, int board[8][8]) const;
+	std::vector<int> GetWhiteKingMoves(int index, int board[8][8], int depth) const;
 	std::vector<int> GetBlackKingMoves(int index, int board[8][8], int depth) const;
 };
