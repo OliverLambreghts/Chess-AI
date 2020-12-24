@@ -91,7 +91,7 @@ private:
 	// -----
 	// AI
 	// -----
-	int m_WhiteScore, m_BlackScore, m_Depth{3};
+	int m_WhiteScore, m_BlackScore, m_Depth{10};
 	// ------------------------ WEIGHTS -------------------------
 	enum class Weights
 	{
@@ -119,7 +119,8 @@ private:
 	int blackThreats[8][8],
 	bool gameOver,
 	bool whiteInCheck,
-	bool blackInCheck);
+	bool blackInCheck,
+	int& alpha, int& beta);
 
 	// --------
 	// PLAYING

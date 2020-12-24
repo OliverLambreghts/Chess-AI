@@ -1,4 +1,6 @@
-﻿  Game.cpp
+﻿  Core.cpp
+  Game.cpp
+  Generating Code...
   ChessResearchV1.vcxproj -> D:\DAE\c++\Games\ChessResearchV1\Debug\ChessResearchV1.exe
   COPY THE DLL FILES
   0 File(s) copied

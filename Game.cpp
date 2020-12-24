@@ -60,9 +60,10 @@ void Game::Update(float elapsedSec)
 				boardCopy[i][j] = m_Board[i][j];
 			}
 		}
+		int alpha{ -99999 }, beta{ 99999 };
 		Minimax(boardCopy, m_Depth, false, m_BlackScore, m_WhiteScore, m_WhiteToPlay, m_SelectedIndex, m_SelectedMove, m_HasWhiteKingMoved, m_HasBlackKingMoved,
 			m_HasWhiteRightRookMoved, m_HasWhiteLeftRookMoved, m_HasBlackRightRookMoved, m_HasBlackLeftRookMoved, m_WhiteThreats, m_BlackThreats, m_GameOver, m_WhiteInCheck,
-			m_BlackInCheck);
+			m_BlackInCheck, alpha, beta);
 	}
 }
 
@@ -1520,51 +1521,9 @@ int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackSc
 	int blackThreats[8][8],
 	bool gameOver,
 	bool whiteInCheck,
-	bool blackInCheck)
+	bool blackInCheck,
+	int& alpha, int& beta)
 {
-	//int blackScoreCopy{};
-	//int whiteScoreCopy{};
-	//bool whiteToPlayCopy{};
-	//int selectedIdxCopy{};
-	//int selectedMoveCopy{};
-	//bool hasWhiteKingMovedCopy{};
-	//bool hasBlackKingMovedCopy{};
-	//bool hasWhiteRightRookMovedCopy{};
-	//bool hasWhiteLeftRookMovedCopy{};
-	//bool hasBlackRightRookMovedCopy{};
-	//bool hasBlackLeftRookMovedCopy{};
-	//int whiteThreatsCopy[8][8]{ 0 };
-	//int blackThreatsCopy[8][8]{ 0 };
-	//bool gameOverCopy{};
-	//bool whiteInCheckCopy{};
-	//bool blackInCheckCopy{};
-	//// Als we in de eerste minimax zitten een kopie maken van alle variabelen
-	//if (depth == m_Depth)
-	//{
-	//	blackScoreCopy = m_BlackScore;
-	//	whiteScoreCopy = m_WhiteScore;
-	//	whiteToPlayCopy = m_WhiteToPlay;
-	//	selectedIdxCopy = m_SelectedIndex;
-	//	selectedMoveCopy = m_SelectedMove;
-	//	hasWhiteKingMovedCopy = m_HasWhiteKingMoved;
-	//	hasBlackKingMovedCopy = m_HasBlackKingMoved;
-	//	hasWhiteRightRookMovedCopy = m_HasWhiteRightRookMoved;
-	//	hasWhiteLeftRookMovedCopy = m_HasWhiteLeftRookMoved;
-	//	hasBlackRightRookMovedCopy = m_HasBlackRightRookMoved;
-	//	hasBlackLeftRookMovedCopy = m_HasBlackLeftRookMoved;
-	//	for (int i{}; i < 8; ++i)
-	//	{
-	//		for (int j{}; j < 8; ++j)
-	//		{
-	//			whiteThreats[i][j] = m_WhiteThreats[i][j];
-	//			blackThreats[i][j] = m_BlackThreats[i][j];
-	//		}
-	//	}
-	//	gameOverCopy = m_GameOver;
-	//	whiteInCheckCopy = m_WhiteInCheck;
-	//	blackInCheckCopy = m_BlackInCheck;
-	//}
-
 	if (depth == 0 || m_GameOver)
 	{
 		return NewEvaluate(m_BlackScore, m_WhiteScore);
@@ -1636,9 +1595,10 @@ int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackSc
 			PlayMove(m_SelectedIndex, m_SelectedMove, boardCopy);
 			// De eerstvolgende mogelijke move recursief door de minimax laten gaan
 			currentEval = Minimax(boardCopy, depth - 1, true, blackScore, whiteScore, whiteToPlay, selectedIdx, selectedMove, hasWhiteKingMoved, hasBlackKingMoved, hasWhiteRightRookMoved,
-				hasWhiteLeftRookMoved, hasBlackRightRookMoved, hasBlackLeftRookMoved, whiteThreats, blackThreats, gameOver, whiteInCheck, blackInCheck);
+				hasWhiteLeftRookMoved, hasBlackRightRookMoved, hasBlackLeftRookMoved, whiteThreats, blackThreats, gameOver, whiteInCheck, blackInCheck, alpha, beta);
 			// De meest negatieve evaluatie verkiezen
 			minEval = std::min(currentEval, minEval);
+			
 			// Als een nieuwe minEval gekozen wordt, wordt ook een nieuwe bestMove geupdate
 			if (minEval == currentEval) bestMove = move;
 
@@ -1665,6 +1625,9 @@ int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackSc
 			m_GameOver = gameOverCopy;
 			m_WhiteInCheck = whiteInCheckCopy;
 			m_BlackInCheck = blackInCheckCopy;
+
+			beta = std::min(beta, currentEval);
+			if (beta <= alpha) break;
 		}
 		// Als er terug naar de update gereturned gaat worden, kunnen de de move zetten 
 		if (depth == m_Depth)
@@ -1740,9 +1703,10 @@ int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackSc
 			PlayMove(m_SelectedIndex, m_SelectedMove, boardCopy);
 			// De eerstvolgende mogelijke move recursief door de minimax laten gaan
 			currentEval = Minimax(boardCopy, depth - 1, false, blackScore, whiteScore, whiteToPlay, selectedIdx, selectedMove, hasWhiteKingMoved, hasBlackKingMoved, hasWhiteRightRookMoved,
-				hasWhiteLeftRookMoved, hasBlackRightRookMoved, hasBlackLeftRookMoved, whiteThreats, blackThreats, gameOver, whiteInCheck, blackInCheck);
+				hasWhiteLeftRookMoved, hasBlackRightRookMoved, hasBlackLeftRookMoved, whiteThreats, blackThreats, gameOver, whiteInCheck, blackInCheck, alpha, beta);
 			// De meest positieve evaluatie verkiezen
 			maxEval = std::max(currentEval, maxEval);
+			
 			// Hier nog de move undo'en op het bord
 			m_BlackScore = blackScoreCopy;
 			m_WhiteScore = whiteScoreCopy;
@@ -1766,6 +1730,9 @@ int Game::Minimax(int board[8][8], int depth, bool maximizingPlayer, int blackSc
 			m_GameOver = gameOverCopy;
 			m_WhiteInCheck = whiteInCheckCopy;
 			m_BlackInCheck = blackInCheckCopy;
+
+			alpha = std::max(alpha, currentEval);
+			if (beta <= alpha) break;
 		}
 		return maxEval;
 	}
