@@ -37,3 +37,38 @@ Alpha-Beta pruning is het niet evalueren van bepaalde nodes in de tree waardoor 
 ![](Images/alphabeta.png)
 
 Dit niet evalueren van bepaalde nodes gebeurt als we al op voorhand weten dat de waarde van die nodes uiteindelijk toch niet gekozen zal worden door het Minimax algoritme, dus kunnen we die weglaten AKA “prunen”.
+
+## Implementatie
+Voor de implementatie van het Minimax algoritme heb ik een functie aangemaakt waarvan de belangrijkste parameters zijn:
+  - De huidige positie op het bord
+  - Diepte
+  - Bool: maximizingPlayer
+
+Bij de eerste call van de Minimax-functie geven we als argumenten de member variabele m_Depth mee om te diepte bij te houden en false voor de maximizingPlayer bool omdat de AI met zwart speelt en zwart de minimizing player is.
+
+In deze functie check ik eerst of de diepte 0 is of het spel gedaan is zodat we weten of we nog verder in de tree moeten traverseren of niet. Als de diepte 0 is of het spel gedaan is, return ik de evaluatie van die node.
+
+Als de opgegeven diepte nog niet behaald is, gaan we checken of het aan de minimizing player (zwart) of aan de maximizing player (wit) is op basis van de maximizingPlayer bool.
+
+### Minimizing player
+Als het aan de minimizing player is (zwart), gaan we op zoek naar de meest negatieve evaluatie die verkregen kan worden vanuit de huidige positie.
+
+Ik heb in de code voor zwart eerst een lokale variabele gemaakt, minEvaluation, waarin we de waarde bijhouden van de meest negatieve evaluatie.
+
+Hierna loopen we over alle mogelijk moves die zwart kan zetten vanuit de huidige positie en gaan we voor elke move recursief de Minimax-functie oproepen. Aan deze functie call geven we als argumenten telkens de diepte-1 mee en true als maximizingPlayer bool omdat het na deze functie call aan wit is om een move te zetten.
+
+Het resultaat van deze functie call steken we in een andere lokale variabele, currentEvaluation.
+
+Hierna zetten we de minEvaluation variabele op de laagste waarde tussen minEvaluation en currentEvaluation. (std::min)
+
+Eens we alle moves hebben geëvalueerd, returnen we minEvaluation.
+
+### Maximizing player
+Als het aan de maximizing player is (wit), gaan we op zoek naar meest positieve evaluatie die verkregen kan worden vanuit de huidige positie.
+
+In deze situatie gaan we hetzelfde doen als voor zwart, maar in plaats van de meest negatieve evaluatie, gaan we de meest positieve evaluatie bijhouden in een lokale variabele, maxEvaluation.
+
+Die gaan we na elke functie call zetten op de hoogste waarde tussen maxEvaluation en currentEvaluation. (std::max)
+
+### Beste move
+We houden ook de beste move voor zwart bij zodat we die kunnen toepassen op het échte bord als we terug in de eerste call van de Minimax-functie komen.
