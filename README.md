@@ -12,3 +12,13 @@ Dit algoritme werkt op basis van een vooraf bepaalde diepte zodat het programma 
 Je kan dit visueel voorstellen als een search tree waarbij elke node een schaakpositie is. Om het simpel te houden, ga ik het voorstellen met een binary search tree.
 
 We beginnen bij de root node, wat de huidige positie voorstelt:
+
+![](Images/Root.png)
+
+Stel onze AI speelt met de zwarte stukken en het is nu aan de AI om te spelen. Om die een beslissing te laten maken, gaan we het Minimax algoritme oproepen met de huidige positie en een bepaalde diepte.
+
+We zullen hier als diepte 2 nemen. Dit betekent dus dat de AI 2 stappen vooruit in de toekomst zal gaan kijken. Eens de diepte bereikt hebben, gaan we alle posities tot die diepte evalueren op basis van een evaluatie-functie, bv. de mogelijkheid om de tegenstander zijn stukken te nemen.
+
+Zwart heeft vanuit de huidige positie verschillende opties:
+
+![](Images/Minimax_tree.png)
