@@ -1746,8 +1746,8 @@ std::vector<int> Game::GetAllLegalMoves(int index) const
 {
 	std::vector<int> moves;
 	if (index < 0 || index > 63) return moves;
-	// Checken of er op die indexpositie effectief een piece staat:
 	int pieceOnIdx = m_Board[m_Grid.GetRowFromIdx(index)][m_Grid.GetColFromIdx(index)];
+	// Checken of er op die indexpositie effectief een piece staat:
 	if (pieceOnIdx == 0) return moves;
 
 	switch (pieceOnIdx)
