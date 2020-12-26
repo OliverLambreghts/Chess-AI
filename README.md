@@ -81,6 +81,6 @@ Dit kan verbeterd worden door het score-systeem van het spel aan te passen. (bv.
 ## Conclusie
 Hoe primitief de AI ook lijkt, ik ben heel blij dat die effectief werkt en dat je ertegen kan spelen. (en in de meeste gevallen kan winnen)
 
-Dit was een goed begin om meer inzicht te verwerven in de complexiteit van een schaak AI/engine.
+Dit was een goed begin om meer inzicht te verwerven over de complexiteit van een schaak AI/engine.
 
 Nu ben ik van plan om me eerst verder te verdiepen in literatuur over neurale netwerken en genetische algoritmes met als doel uiteindelijk zelf een schaak-engine te kunnen schrijven die autonoom kan leren om beter te worden.
