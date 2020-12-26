@@ -72,3 +72,15 @@ Die gaan we na elke functie call zetten op de hoogste waarde tussen maxEvaluatio
 
 ### Beste move
 We houden ook de beste move voor zwart bij zodat we die kunnen toepassen op het échte bord als we terug in de eerste call van de Minimax-functie komen.
+
+## Resultaat
+Hoe de AI nu geïmplementeerd is, werkt die nog vrij simplistisch aangezien die enkel moves evalueert op basis van de mogelijkheid om andere stukken te kunnen nemen.
+
+Dit kan verbeterd worden door het score-systeem van het spel aan te passen. (bv. Doubled pawns, stukken ontwikkelen, castling, center control,..)
+
+## Conclusie
+Hoe primitief de AI ook lijkt, ik ben heel blij dat die effectief werkt en dat je ertegen kan spelen. (en in de meeste gevallen kan winnen)
+
+Dit was een goed begin om meer inzicht te verwerven in de complexiteit van een schaak AI/engine.
+
+Nu ben ik van plan om me eerst verder te verdiepen in literatuur over neurale netwerken en genetische algoritmes met als doel uiteindelijk zelf een schaak-engine te kunnen schrijven die autonoom kan leren om beter te worden.
