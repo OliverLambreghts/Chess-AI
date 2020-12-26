@@ -34,3 +34,6 @@ Eens we alle posities in de tree hebben geëvalueerd, gaan we dus onze AI de pos
 ## Alpha-Beta pruning
 Alpha-Beta pruning is het niet evalueren van bepaalde nodes in de tree waardoor het Minimax algoritme sneller zal verlopen.
 
+![](Images/alphabeta.png)
+
+Dit niet evalueren van bepaalde nodes gebeurt als we al op voorhand weten dat de waarde van die nodes uiteindelijk toch niet gekozen zal worden door het Minimax algoritme, dus kunnen we die weglaten AKA “prunen”.
