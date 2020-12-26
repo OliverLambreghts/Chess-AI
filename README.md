@@ -74,6 +74,15 @@ Die gaan we na elke functie call zetten op de hoogste waarde tussen maxEvaluatio
 ### Beste move
 We houden ook de beste move voor zwart bij zodat we die kunnen toepassen op het échte bord als we terug in de eerste call van de Minimax-functie komen.
 
+### Pruning
+Voor Alpha-Beta pruning gaan we 2 extra parameters toevoegen aan de Minimax-functie: alpha en beta. Alpha is hier in eerste instantie de slechtst mogelijke score voor wit en beta de slechtst mogelijke score voor zwart.
+
+Deze waarden worden recursief doorgegeven aan Minimax en worden aangepast naar hun betere, en uiteindelijk, best mogelijke waarden.
+
+Als beta kleiner is dan alpha dan had zwart eerder in de tree een betere move, dus kan de volgende move die geëvalueerd moet worden weggelaten worden. Dit heet "prunen". Er wordt enkel gepruned als beta kleiner is dan alpha.
+
+Bij het loopen door alle mogelijke moves van een bepaalde kleur vanuit de huidige positie gaan we uit de loop breaken als beta kleiner is dan alpha en wordt de volgende move dus gepruned.
+
 ## Resultaat
 Hoe de AI nu geïmplementeerd is, werkt die nog vrij simplistisch aangezien die enkel moves evalueert op basis van de mogelijkheid om andere stukken te kunnen nemen.
 
