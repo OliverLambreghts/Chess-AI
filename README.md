@@ -88,6 +88,8 @@ Hoe de AI nu geïmplementeerd is, werkt die nog vrij simplistisch aangezien die 
 
 Dit kan verbeterd worden door het score-systeem van het spel aan te passen. (bv. Doubled pawns, stukken ontwikkelen, castling, center control,..)
 
+![](Images/chessgif.gif)
+
 ## Conclusie
 Hoe primitief de AI ook lijkt, ik ben heel blij dat die effectief werkt en dat je ertegen kan spelen. (en in de meeste gevallen kan winnen)
 
