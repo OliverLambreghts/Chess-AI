@@ -44,7 +44,7 @@ Voor de implementatie van het Minimax algoritme heb ik een functie aangemaakt wa
   - Diepte
   - Bool: maximizingPlayer
 
-Bij de eerste call van de Minimax-functie geven we als argumenten de member variabele m_Depth mee om de diepte bij te houden en false voor de maximizingPlayer boolean omdat de AI met zwart speelt en zwart de minimizing player is.
+Bij de eerste call van de Minimax-functie geven we als argumenten de member variabele m_Depth mee om de diepte bij te houden en "false" voor de maximizingPlayer boolean omdat de AI met zwart speelt en zwart de minimizing player is.
 
 In deze functie check ik eerst of de diepte 0 is of dat het spel gedaan is zodat we weten of we nog verder in de tree moeten traverseren of niet. Als de diepte 0 is of het spel gedaan is, return ik de evaluatie van die node.
 
@@ -55,20 +55,20 @@ Als het aan de minimizing player is (zwart), gaan we op zoek naar de meest negat
 
 Ik heb in de code voor zwart eerst een lokale variabele gemaakt, minEvaluation, waarin we de waarde bijhouden van de meest negatieve evaluatie.
 
-Hierna loopen we over alle mogelijk moves die zwart kan zetten vanuit de huidige positie en gaan we voor elke move recursief de Minimax-functie oproepen. Aan deze functie call geven we als argumenten telkens de diepte-1 mee en true als maximizingPlayer bool omdat het na deze functie call aan wit is om een move te zetten.
+Hierna loopen we over alle mogelijke moves die zwart kan zetten vanuit de huidige positie en gaan we voor elke move recursief de Minimax-functie oproepen. Aan deze functie call geven we als argumenten telkens de diepte-1 mee en "true" als maximizingPlayer bool omdat het na deze functie call aan wit is om een move te zetten.
 
-Het resultaat van deze functie call steken we in een andere lokale variabele, currentEvaluation.
+Het resultaat van deze functie call steken we in een andere lokale variabele: currentEvaluation.
 
-Hierna zetten we de minEvaluation variabele op de laagste waarde tussen minEvaluation en currentEvaluation. (std::min)
+Hierna zetten we de minEvaluation variabele op de laagste waarde tussen minEvaluation en currentEvaluation (std::min).
 
 Eens we alle moves hebben geëvalueerd, returnen we minEvaluation.
 
 ### Maximizing player
-Als het aan de maximizing player is (wit), gaan we op zoek naar meest positieve evaluatie die verkregen kan worden vanuit de huidige positie.
+Als het aan de maximizing player is (wit), gaan we op zoek naar de meest positieve evaluatie die verkregen kan worden vanuit de huidige positie.
 
-In deze situatie gaan we hetzelfde doen als voor zwart, maar in plaats van de meest negatieve evaluatie, gaan we de meest positieve evaluatie bijhouden in een lokale variabele, maxEvaluation.
+In deze situatie gaan we hetzelfde doen als voor zwart, maar in plaats van de meest negatieve evaluatie, gaan we de meest positieve evaluatie bijhouden in een lokale variabele: maxEvaluation.
 
-Die gaan we na elke functie call zetten op de hoogste waarde tussen maxEvaluation en currentEvaluation. (std::max)
+Die gaan we na elke functie call zetten op de hoogste waarde tussen maxEvaluation en currentEvaluation (std::max).
 
 ### Beste move
 We houden ook de beste move voor zwart bij zodat we die kunnen toepassen op het échte bord als we terug in de eerste call van de Minimax-functie komen.
@@ -78,19 +78,19 @@ Voor Alpha-Beta pruning gaan we 2 extra parameters toevoegen aan de Minimax-func
 
 Deze waarden worden recursief doorgegeven aan Minimax en worden aangepast naar hun betere, en uiteindelijk, best mogelijke waarden.
 
-Als beta kleiner is dan alpha dan had zwart eerder in de tree een betere move, dus kan de volgende move die geëvalueerd moet worden weggelaten worden. Dit heet "prunen". Er wordt enkel gepruned als beta kleiner is dan alpha.
+Als beta kleiner is dan alpha, dan had zwart eerder in de tree een betere move, dus kan de volgende move die geëvalueerd moet worden weggelaten worden. Dit heet "prunen". Er wordt enkel gepruned als beta kleiner is dan alpha.
 
 Bij het loopen door alle mogelijke moves van een bepaalde kleur vanuit de huidige positie gaan we uit de loop breaken als beta kleiner is dan alpha en wordt de volgende move dus gepruned.
 
 ## Resultaat
 Hoe de AI nu geïmplementeerd is, werkt die nog vrij simplistisch aangezien die enkel moves evalueert op basis van de mogelijkheid om andere stukken te kunnen nemen.
 
-Dit kan verbeterd worden door het score-systeem van het spel aan te passen. (bv. Doubled pawns, stukken ontwikkelen, castling, center control,..)
+Dit kan verbeterd worden door het score-systeem van het spel aan te passen (bv. Doubled pawns, stukken ontwikkelen, castling, center control,..).
 
 ![](Images/chessgif.gif)
 
 ## Conclusie
-Hoe primitief de AI ook lijkt, ik ben heel blij dat die effectief werkt en dat je ertegen kan spelen. (en in de meeste gevallen kan winnen)
+Hoe primitief de AI ook lijkt, ik ben heel blij dat die effectief werkt en dat je er tegen kan spelen (en in de meeste gevallen kan winnen).
 
 Dit was een goed begin om meer inzicht te verwerven over de complexiteit van een schaak AI/engine.
 
