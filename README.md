@@ -36,7 +36,7 @@ Alpha-Beta pruning is het niet evalueren van bepaalde nodes in de tree waardoor 
 
 ![](Images/alphabeta.png)
 
-Dit niet evalueren van bepaalde nodes gebeurt als we al op voorhand weten dat de waarde van die nodes uiteindelijk toch niet gekozen zal worden door het Minimax algoritme, dus kunnen we die weglaten AKA “prunen”.
+Dit niet evalueren van bepaalde nodes gebeurt als we al op voorhand weten dat de waarde van die nodes uiteindelijk toch niet gekozen zal worden door het Minimax algoritme. We kunnen die dus weglaten AKA “prunen”.
 
 ## Implementatie
 Voor de implementatie van het Minimax algoritme heb ik een functie aangemaakt waarvan de belangrijkste parameters zijn:
@@ -44,9 +44,9 @@ Voor de implementatie van het Minimax algoritme heb ik een functie aangemaakt wa
   - Diepte
   - Bool: maximizingPlayer
 
-Bij de eerste call van de Minimax-functie geven we als argumenten de member variabele m_Depth mee om te diepte bij te houden en false voor de maximizingPlayer bool omdat de AI met zwart speelt en zwart de minimizing player is.
+Bij de eerste call van de Minimax-functie geven we als argumenten de member variabele m_Depth mee om de diepte bij te houden en false voor de maximizingPlayer boolean omdat de AI met zwart speelt en zwart de minimizing player is.
 
-In deze functie check ik eerst of de diepte 0 is of het spel gedaan is zodat we weten of we nog verder in de tree moeten traverseren of niet. Als de diepte 0 is of het spel gedaan is, return ik de evaluatie van die node.
+In deze functie check ik eerst of de diepte 0 is of dat het spel gedaan is zodat we weten of we nog verder in de tree moeten traverseren of niet. Als de diepte 0 is of het spel gedaan is, return ik de evaluatie van die node.
 
 Als de opgegeven diepte nog niet behaald is, gaan we checken of het aan de minimizing player (zwart) of aan de maximizing player (wit) is op basis van de maximizingPlayer bool.
 
